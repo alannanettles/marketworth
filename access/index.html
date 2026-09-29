@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#1f4d43" />
+  <meta name="description" content="Know whether a craft fair or vendor market is worth booking before you pay the booth fee." />
+  <title>MarketWorth — Craft Fair Profit Calculator</title>
+  
+  <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="/" aria-label="MarketWorth home">
+      <span class="brand-mark">MW</span>
+      <span>MarketWorth</span>
+    </a>
+    <span class="header-cta">Buyer access</span>
+  </header>
+
+  <main id="top">
+    <section class="hero wrap"><div class="hero-copy"><p class="eyebrow">Your MarketWorth access</p><h1>Run the numbers.</h1><p class="hero-sub">Use the calculator below whenever you are considering a craft fair or vendor market.</p></div></section><section class="hero wrap" style="display:none">
+      <div class="hero-copy">
+        <p class="eyebrow">Built for makers who sell in person</p>
+        <h1>Should you book that market?</h1>
+        <p class="hero-sub">Run the numbers before you pay the booth fee. See break-even sales, expected profit, and profit per hour in about a minute.</p>
+        <div class="hero-actions">
+          <a class="button primary" href="#calculator">Check a market</a>
+          <a class="button ghost" href="#how">See how it works</a>
+        </div>
+        <div class="trust-row" aria-label="Product highlights">
+          <span>No login</span><span>Works on your phone</span><span>Your numbers stay on your device</span>
+        </div>
+      </div>
+      <aside class="hero-card" aria-label="Example result">
+        <div class="mini-label">Example market</div>
+        <div class="hero-verdict good">Strong economics</div>
+        <div class="mini-grid">
+          <div><span>Expected net</span><strong>$412</strong></div>
+          <div><span>Break-even sales</span><strong>9</strong></div>
+          <div><span>Profit / hour</span><strong>$41.20</strong></div>
+          <div><span>Expected sales</span><strong>18</strong></div>
+        </div>
+        <p>Replace the sample numbers with yours and MarketWorth does the rest.</p>
+      </aside>
+    </section>
+
+    <section id="calculator" class="calculator-section">
+      <div class="wrap calculator-grid">
+        <div class="input-panel card">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Market calculator</p>
+              <h2>Tell us what the event looks like.</h2>
+            </div>
+            <button id="resetBtn" class="text-button" type="button">Reset sample</button>
+          </div>
+
+          <form id="calcForm" novalidate>
+            <div class="field-group">
+              <h3>1. Your fixed event costs</h3>
+              <div class="fields two">
+                <label>Booth fee <span class="hint">$</span><input id="boothFee" type="number" min="0" step="1" value="125" inputmode="decimal" /></label>
+                <label>Travel miles <span class="hint">round trip</span><input id="travelMiles" type="number" min="0" step="1" value="40" inputmode="decimal" /></label>
+                <label>Mileage cost <span class="hint">$/mile</span><input id="mileageRate" type="number" min="0" step="0.01" value="0.70" inputmode="decimal" /></label>
+                <label>Travel cost override <span class="hint">optional $</span><input id="travelCost" type="number" min="0" step="1" placeholder="Use miles instead" inputmode="decimal" /></label>
+                <label>Lodging / trip costs <span class="hint">$</span><input id="lodging" type="number" min="0" step="1" value="0" inputmode="decimal" /></label>
+                <label>Other fixed costs <span class="hint">$</span><input id="extraFixed" type="number" min="0" step="1" value="35" inputmode="decimal" /></label>
+              </div>
+              <p class="field-note">If you enter a travel cost, it replaces the mileage estimate.</p>
+            </div>
+
+            <div class="field-group">
+              <h3>2. Event traffic & sales</h3>
+              <div class="fields two">
+                <label>Event hours <input id="eventHours" type="number" min="0.5" step="0.5" value="6" inputmode="decimal" /></label>
+                <label>Expected attendance <input id="attendance" type="number" min="1" step="1" value="1200" inputmode="numeric" /></label>
+                <label>Visit your booth <span class="hint">%</span><input id="visitRate" type="number" min="0" max="100" step="0.5" value="8" inputmode="decimal" /></label>
+                <label>Visitors who buy <span class="hint">%</span><input id="conversionRate" type="number" min="0" max="100" step="0.5" value="20" inputmode="decimal" /></label>
+                <label>Average order value <span class="hint">$</span><input id="aov" type="number" min="0" step="0.5" value="38" inputmode="decimal" /></label>
+                <label>Product gross margin <span class="hint">%</span><input id="margin" type="number" min="1" max="100" step="1" value="68" inputmode="decimal" /></label>
+              </div>
+            </div>
+
+            <div class="field-group">
+              <h3>3. Your time</h3>
+              <div class="fields two">
+                <label>Setup / prep hours <span class="hint">optional</span><input id="laborHours" type="number" min="0" step="0.5" value="4" inputmode="decimal" /></label>
+                <div class="explain-box"><strong>Why ask this?</strong><span>We use event + setup time to show what the market could pay you per hour.</span></div>
+              </div>
+            </div>
+
+            <button class="button primary wide" type="submit">Calculate this market</button>
+            <p id="formError" class="error" role="alert" hidden></p>
+          </form>
+        </div>
+
+        <div class="result-panel card" id="results" aria-live="polite">
+          <div class="result-top">
+            <div>
+              <p class="eyebrow">Your market outlook</p>
+              <div id="verdict" class="verdict good">Strong economics</div>
+            </div>
+            <div id="verdictNote" class="verdict-note">Your expected sales comfortably clear break-even.</div>
+          </div>
+
+          <div class="result-feature">
+            <span>Estimated net profit</span>
+            <strong id="netProfit">$0</strong>
+            <small id="profitHour">$0 per hour</small>
+          </div>
+
+          <div class="metrics">
+            <div class="metric"><span>Total event cost</span><strong id="totalCost">$0</strong><small>Booth, travel, lodging & fixed extras</small></div>
+            <div class="metric"><span>Break-even revenue</span><strong id="breakEvenRevenue">$0</strong><small>Revenue needed after product costs</small></div>
+            <div class="metric"><span>Break-even sales</span><strong id="breakEvenSales">0</strong><small>Orders needed at your average order value</small></div>
+            <div class="metric"><span>Attendance needed</span><strong id="customersNeeded">0</strong><small>At your visit + conversion assumptions</small></div>
+            <div class="metric"><span>Estimated buyers</span><strong id="estimatedBuyers">0</strong><small>Expected orders from event traffic</small></div>
+            <div class="metric"><span>Estimated revenue</span><strong id="estimatedRevenue">$0</strong><small>Buyers × average order value</small></div>
+            <div class="metric"><span>Estimated gross profit</span><strong id="grossProfit">$0</strong><small>Revenue after product costs</small></div>
+            <div class="metric"><span>Total time</span><strong id="totalHours">0 hrs</strong><small>Event + setup / prep time</small></div>
+          </div>
+
+          <div class="math-explainer">
+            <h3>What the math means</h3>
+            <p id="plainMath"></p>
+          </div>
+
+          <div class="scenario-wrap">
+            <div class="scenario-heading"><h3>Low / expected / high</h3><span>Same costs, different turnout & sales strength</span></div>
+            <div class="scenario-table" role="table" aria-label="Scenario comparison">
+              <div class="scenario-row scenario-head" role="row"><span>Scenario</span><span>Sales</span><span>Revenue</span><span>Net</span></div>
+              <div class="scenario-row" role="row"><strong>Low</strong><span id="lowSales"></span><span id="lowRevenue"></span><span id="lowNet"></span></div>
+              <div class="scenario-row expected" role="row"><strong>Expected</strong><span id="expSales"></span><span id="expRevenue"></span><span id="expNet"></span></div>
+              <div class="scenario-row" role="row"><strong>High</strong><span id="highSales"></span><span id="highRevenue"></span><span id="highNet"></span></div>
+            </div>
+          </div>
+
+          <div class="result-actions">
+            <button id="printBtn" class="button secondary" type="button">Print / save PDF</button>
+            <button id="downloadBtn" class="button ghost-dark" type="button">Download summary</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="benefits wrap" style="display:none">
+      <div class="section-intro"><p class="eyebrow">A tiny decision tool that can save a costly weekend</p><h2>Know the numbers before you commit.</h2></div>
+      <div class="benefit-grid">
+        <article><span>01</span><h3>See your real break-even</h3><p>Factor in product margin, not just the booth fee, so your target is grounded in the way your business actually earns.</p></article>
+        <article><span>02</span><h3>Pressure-test attendance claims</h3><p>Turn “5,000 people expected!” into the booth visitors and buyers you would actually need.</p></article>
+        <article><span>03</span><h3>Protect your time</h3><p>Compare expected profit with the full hours you spend prepping, setting up, selling, and packing down.</p></article>
+      </div>
+    </section>
+
+    <section id="how" class="how-section" style="display:none">
+      <div class="wrap how-grid">
+        <div><p class="eyebrow">How it works</p><h2>From event flyer to go / no-go in three steps.</h2></div>
+        <ol>
+          <li><span>1</span><div><strong>Add the event costs.</strong><p>Booth fee, travel, lodging and any extra fixed expenses.</p></div></li>
+          <li><span>2</span><div><strong>Estimate the sales funnel.</strong><p>Attendance → people who visit your booth → people who buy → average order value.</p></div></li>
+          <li><span>3</span><div><strong>Compare the upside.</strong><p>See break-even, expected net profit, hourly return, and conservative / optimistic scenarios.</p></div></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="audience wrap" style="display:none">
+      <p class="eyebrow">Made for real vendor businesses</p>
+      <h2>Crochet. Candles. Cookies. Jewelry. Tumblers. Art. Soap. Stickers. And everything in between.</h2>
+      <p>If you pay to show up and sell products in person, MarketWorth helps you decide whether the event deserves your money and your weekend.</p>
+    </section>
+
+    <section id="buy" class="buy-section" style="display:none">
+      <div class="wrap buy-card">
+        <div><p class="eyebrow">One simple purchase</p><h2>Stop guessing on booth fees.</h2><p>Get lifetime access to the MarketWorth calculator for <strong>$9.99 one-time</strong>.</p></div>
+        <div class="buy-action">
+          <button class="button primary purchase-button" data-purchase type="button">Get MarketWorth · $9.99</button>
+          <small>Secure checkout connection coming next.</small>
+        </div>
+      </div>
+    </section>
+
+    <section class="faq wrap" style="display:none">
+      <div><p class="eyebrow">FAQ</p><h2>Useful before your next application deadline.</h2></div>
+      <div class="faq-list">
+        <details open><summary>What if I don’t know how many people will visit my booth?</summary><p>Use a conservative estimate. MarketWorth also shows low and high scenarios so you can see whether the event only works when everything goes perfectly.</p></details>
+        <details><summary>What does gross margin mean?</summary><p>It’s the percentage of each sale left after the direct cost of making the product. If a $20 item costs $6 in materials, its gross margin is 70%.</p></details>
+        <details><summary>Does profit per hour include prep time?</summary><p>Yes, when you enter setup / prep hours. We divide estimated net profit by event hours plus those additional hours.</p></details>
+        <details><summary>Is my data saved?</summary><p>No account or database is used in this version. Calculations happen in your browser. Your inputs stay on your device unless you print or download your own summary.</p></details>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap footer-inner"><div class="brand"><span class="brand-mark">MW</span><span>MarketWorth</span></div><p>Make the market earn its spot on your calendar.</p></div>
+  </footer>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="/app.js" defer></script>
+</body>
+</html>
